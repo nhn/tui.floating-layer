@@ -1,0 +1,24 @@
+{
+  "name": "component-floatinglayer",
+  "description": "floating layer component",
+  "main": "index.js",
+  "private": true,
+  "authors": [
+    "NHNEnt FE Development Team <dl_javascript@nhnent.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "floatinglayer"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "tui-code-snippet": "^1.1.1"
+  }
+}
