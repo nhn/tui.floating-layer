@@ -6,12 +6,12 @@
         "es6": true,
         "browser": true,
         "commonjs": true,
-        "jasmine": true,
-        "dom": true
+        "jasmine": true
     },
     "globals": {
         "tui": true,
-        "fixture": true
+        "fixture": true,
+        "dom": true
     },
     "plugins": ["babel"],
     "rules": {

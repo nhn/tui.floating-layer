@@ -33,10 +33,13 @@ export function createLayer(...cssClass) {
  */
 export default class FloatingLayer extends View {
     /**
+     * Constructor
      * @param {HTMLElement} [container] - base container element
      * @param {object} [options] - options for FloatingLayer
      *   @param {boolean} [options.modaless=false] - set true for create floating
      *    layer without dimmed layer
+     * @example
+     * var layer = new tui.component.FloatingLayer(document.querySelector('#fl'));
      */
     constructor(container, {modaless = false} = {}) {
         super(createLayer('floating-layer'));
@@ -101,7 +104,6 @@ export default class FloatingLayer extends View {
 
     /**
      * Destroy floating layer. no layer after destroying then
-     * @override
      */
     beforeDestroy() {
         const siblings = this.siblings;
@@ -118,6 +120,15 @@ export default class FloatingLayer extends View {
         dom.removeElement(this.dimm);
 
         this.options = this.siblings = this.zIndex = null;
+    }
+
+    /**
+     * Destructor
+     * @override
+     * @api
+     */
+    destroy() {
+        View.prototype.destroy.call(this);
     }
 
     /**
@@ -142,6 +153,7 @@ export default class FloatingLayer extends View {
 
     /**
      * Set focus to layer
+     * @api
      */
     focus() {
         const largestZIndex = this.getLargestZIndex();
@@ -158,6 +170,7 @@ export default class FloatingLayer extends View {
 
     /**
      * Show layer
+     * @api
      */
     show() {
         this.focus();
@@ -170,6 +183,7 @@ export default class FloatingLayer extends View {
 
     /**
      * Hide layer
+     * @api
      */
     hide() {
         dom.css(this.container, 'display', 'none');
