@@ -4,7 +4,7 @@
   "description": "floating layer component",
   "main": "index.js",
   "scripts": {
-    "test": "npm run bundle && karma start",
+    "test": "npm run bundle && karma start karma.conf.private.js",
     "bundle": "cp src/floatingLayer.css ./floatinglayer.css && browserify index.js -o floatinglayer.js -t babelify && uglifyjs floatinglayer.js -c -m -o floatinglayer.min.js",
     "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json -t node_modules/fedoc-template"
   },
