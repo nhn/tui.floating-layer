@@ -18,7 +18,7 @@ module.exports = function(config) {
         files: [
             'floatinglayer.css',
             'bower_components/tui-code-snippet/code-snippet.js',
-            'node_modules/dom/dom.js',
+            'bower_components/tui-domutil/domutil.js',
             'floatinglayer.js',
             'test/*.js'
         ],

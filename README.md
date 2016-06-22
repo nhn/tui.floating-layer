@@ -11,7 +11,7 @@ FloatingLayer Component
 * **Sample** : https://nhnent.github.io/tui.component.floatinglayer/latest/tutorial.html
 
 ## Dependency
-* tui-code-snippet : 1.1.1
+* tui-code-snippet : 1.2.0
 * tui-domutil : 1.0.4
 
 ## Test environment

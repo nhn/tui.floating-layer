@@ -23,11 +23,12 @@
     "index.js",
     "jsdoc-conf.json",
     "karma.conf.js",
+    "karma.conf.*.js",
     "package.json",
     "bower.json"
   ],
   "dependencies": {
-    "tui-code-snippet": "1.1.1",
-    "tui-domutil": "1.0.4"
+    "tui-code-snippet": "^1.2.0",
+    "tui-domutil": "^1.0.4"
   }
 }
