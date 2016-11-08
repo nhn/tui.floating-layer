@@ -8,7 +8,7 @@ FloatingLayer Component
 ## Documentation
 * **API** : https://nhnent.github.io/tui.component.floatinglayer/latest
 * **Tutorial** : https://github.com/nhnent/tui.component.floatinglayer/wiki/FloatingLayer-Tutorial
-* **Sample** : https://nhnent.github.io/tui.component.floatinglayer/latest/tutorial.html
+* **Sample** : https://nhnent.github.io/tui.component-floatinglayer/latest/tutorial-default.html
 
 ## Dependency
 * tui-code-snippet : 1.2.0
