@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Floating Layer</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Floating Layer</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    <ol class="lnb-tab">
+        <li id="api-tab">
+            <a href="#"><h4>API</h4></a>
+        </li>
+        <li id="examples-tab">
+            <a href="#"><h4>Examples</h4></a>
+        </li>
+    </ol>
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-default.html">Generate Floating Layer</a><div class="hidden" id="default_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="FloatingLayer.html">FloatingLayer</a><div class="hidden" id="FloatingLayer_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="FloatingLayer.html#boundCache">boundCache</a></li><li><a href="FloatingLayer.html#children">children</a></li><li><a href="FloatingLayer.html#container">container</a></li><li><a href="FloatingLayer.html#dimm">dimm</a></li><li><a href="FloatingLayer.html#id">id</a></li><li><a href="FloatingLayer.html#options">options</a></li><li><a href="FloatingLayer.html#parent">parent</a></li><li><a href="FloatingLayer.html#siblings">siblings</a></li><li><a href="FloatingLayer.html#zIndex">zIndex</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="FloatingLayer.html#addChild">addChild</a></li><li><a href="FloatingLayer.html#beforeDestroy">beforeDestroy</a></li><li><a href="FloatingLayer.html#clearProperties">clearProperties</a></li><li><a href="FloatingLayer.html#createFallbackElement">createFallbackElement</a></li><li><a href="FloatingLayer.html#destroy">destroy</a></li><li><a href="FloatingLayer.html#focus">focus</a></li><li><a href="FloatingLayer.html#getBound">getBound</a></li><li><a href="FloatingLayer.html#getLargestZIndex">getLargestZIndex</a></li><li><a href="FloatingLayer.html#hide">hide</a></li><li><a href="FloatingLayer.html#initialize">initialize</a></li><li><a href="FloatingLayer.html#recursive">recursive</a></li><li><a href="FloatingLayer.html#removeChild">removeChild</a></li><li><a href="FloatingLayer.html#render">render</a></li><li><a href="FloatingLayer.html#resize">resize</a></li><li><a href="FloatingLayer.html#setBound">setBound</a></li><li><a href="FloatingLayer.html#setContent">setContent</a></li><li><a href="FloatingLayer.html#show">show</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Module for managing non zero z-index division on viewport
+ * @author NHN Ent. FE Development Team &lt;dl_javascript@nhnent.com>
+ */
+import View from './view';
+
+const VIEW_PROP = '_floatingLayer';
+const DEFAULT_ZINDEX = 999;
+const dom = tui.dom;
+
+/**
+ * Create layer for floating ui
+ * @params {...string} [cssClass] - css classes
+ * @returns {HTMLElement} layer
+ * @ignore
+ */
+export function createLayer(...cssClass) {
+    const layer = document.createElement('div');
+
+    dom.css(layer, {
+        display: 'none',
+        position: 'absolute'
+    });
+
+    if (cssClass.length) {
+        dom.addClass(layer, ...cssClass);
+    }
+
+    return layer;
+}
+
+/**
+ * Class for managing floating layers
+ * @class
+ * @extends View
+ */
+class FloatingLayer extends View {
+    /**
+     * @param {HTMLElement} [container] - base container element
+     * @param {object} [object] - options for FloatingLayer
+     *   @param {boolean} [options.modaless=false] - set true for create floating
+     *    layer without dimmed layer
+     * @example
+     * var layer = new tui.component.FloatingLayer(document.querySelector('#fl'));
+     */
+    constructor(container, {modaless = false} = {}) {
+        super(createLayer('floating-layer'));
+
+        /**
+         * @type {object}
+         */
+        this.options = Object.assign({}, {modaless});
+
+        /**
+         * @type {HTMLElement}
+         */
+        this.parent = container;
+
+        /**
+         * @type {number}
+         */
+        this.zIndex = DEFAULT_ZINDEX;
+
+        /**
+         * @type {HTMLElement}
+         */
+        this.dimm = null;
+
+        /**
+         * @type {object}
+         */
+        this.siblings = null;
+
+        this.initialize(container);
+    }
+
+    /**
+     * Initialize floating layer instance
+     * @param {HTMLElement} container - element to base of several floating
+     *  layers not floating layer itself
+     */
+    initialize(container) {
+        let siblings = container[VIEW_PROP];
+
+        if (!siblings) {
+            siblings = container[VIEW_PROP] = new Set();
+        }
+
+        siblings.add(this);
+
+        this.siblings = siblings;
+
+        this.zIndex = this.getLargestZIndex() + 1;
+
+        if (!this.options.modaless) {
+            let dimm = this.dimm = createLayer('floating-layer-dimm');
+
+            dom.css(dimm, 'position', 'fixed');
+            dom.setBound(dimm, {top: 0, right: 0, bottom: 0, left: 0});
+
+            container.appendChild(dimm);
+        }
+
+        container.appendChild(this.container);
+    }
+
+    /**
+     * Destroy floating layer. no layer after destroying then
+     */
+    beforeDestroy() {
+        const siblings = this.siblings;
+        const parent = this.parent;
+
+        siblings.delete(this);
+
+        if (!siblings.size) {
+            delete parent[VIEW_PROP];
+            dom.css(parent, 'position', '');
+        }
+
+        dom.removeElement(this.container);
+        dom.removeElement(this.dimm);
+
+        this.options = this.siblings = this.zIndex = null;
+    }
+
+    /**
+     * Destructor
+     * @override
+     */
+    destroy() {
+        View.prototype.destroy.call(this);
+    }
+
+    /**
+     * Set layer content
+     * @param {string} html - html string
+     */
+    setContent(html) {
+        this.container.innerHTML = html;
+    }
+
+    /**
+     * Get largest z-index value in this container
+     * @returns {number}
+     */
+    getLargestZIndex() {
+        const indexes = [...this.siblings].map(fl => fl.zIndex);
+
+        indexes.push(DEFAULT_ZINDEX);
+
+        return Math.max(...indexes);
+    }
+
+    /**
+     * Set focus to layer
+     */
+    focus() {
+        const largestZIndex = this.getLargestZIndex();
+        const newZIndex = (largestZIndex + 2);
+
+        dom.css(this.container, 'zIndex', newZIndex);
+
+        this.zIndex = newZIndex;
+
+        if (!this.options.modaless) {
+            dom.css(this.dimm, 'zIndex', (this.zIndex - 1));
+        }
+    }
+
+    /**
+     * Show layer
+     */
+    show() {
+        this.focus();
+        dom.css(this.container, 'display', 'block');
+
+        if (!this.options.modaless) {
+            dom.css(this.dimm, 'display', 'block');
+        }
+    }
+
+    /**
+     * Hide layer
+     */
+    hide() {
+        dom.css(this.container, 'display', 'none');
+
+        if (!this.options.modaless) {
+            dom.css(this.dimm, 'display', 'none');
+        }
+    }
+}
+
+export default FloatingLayer;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
+
+        $(element).removeClass('hidden');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,126 +44,105 @@
 <div class="main" id="main">
     
 
-<section>
-    <header>
-        
 
-        <h2>Generate Floating Layer</h2>
-    </header>
 
-    <ul id="example-nav" class="nav nav-tabs">
-        <li role="presentation" id="example-result-btn" class="active" onclick="showResult()">
-            <a href="#">Result</a>
-        </li>
-        <li role="presentation" id="example-js-btn" class="" onclick="showJs()">
-            <a href="#">JS</a>
-        </li>
-        <li role="presentation" id="example-html-btn" class="" onclick="showHtml()">
-            <a href="#">HTML</a>
-        </li>
-    </ul>
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Core utility methods module
+ * @author NHN Ent. FE Development team &lt;dl_javascript@nhnent.com>
+ */
+const util = tui.util;
 
-    <article>
-        
-        <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/default.html></iframe>
-        <div id="example-js" class="hidden"><pre class="prettyprint source">
-        var dom = tui.dom;
-        var container = dom.find('#fl');
+/**
+ * A no-operation function that returns undefined regardless of the arguments
+ *  it receives.
+ * @ignore
+ */
+export function noop() {}
 
-        var layer = new tui.component.FloatingLayer(container);
-        layer.setContent('&lt;div id="modal">modal layer&lt;button>&amp;times;&lt;/button>&lt;/div>');
-        layer.setBound({top: 50, left: 50, width: 200, height: 150});
+/**
+ * Create a duplicate-free version of an array
+ * @param {Array} array - The array to inspect.
+ * @returns {Array} Returns the new duplicate free array.
+ * @ignore
+ */
+export function uniq(array) {
+    return [...new Set(array)];
+}
 
-        var layer2 = new tui.component.FloatingLayer(container, {modaless: true});
-        layer2.setContent('&lt;div id="modaless">modaless layer&lt;button>&amp;times;&lt;/button>&lt;/div>');
-        layer2.setBound({top: 100, left: 100, width: 300, height: 200});
 
-        dom.on(layer.container, 'click', function(e) {
-            var target = e.target || e.srcElement;
+/**
+ * @param {Collection} collection - The collection to iterate over.
+ * @param {function} [iteratee] - The function invoked per iteration.
+ * @param {*} accumulator - The initial value.
+ * @returns {*} Returns the accumulated value.
+ * @ignore
+ */
+export function reduce(collection, iteratee, accumulator) {
+    if (util.isArray(collection)) {
+        if (accumulator) {
+            return collection.reduce(iteratee, accumulator);
+        }
 
-            if (target.nodeName.toLowerCase() === 'button') {
-                layer.hide();
-            }
-        });
-
-        dom.on(dom.find('#open1'), 'click', function() {
-            layer.show();
-        });
-
-        dom.on(layer2.container, 'click', function(e) {
-            var target = e.target || e.srcElement;
-
-            if (target.nodeName.toLowerCase() === 'button') {
-                layer2.hide();
-            }
-        });
-
-        dom.on(dom.find('#open2'), 'click', function() {
-            layer2.show();
-        });
-        </pre></div>
-        <div id="example-html" class="hidden"><pre class="prettyprint source">
-            &lt;div id="fl">&lt;/div>
-            &lt;button type="button" id="open1">Open layer1 (modal)&lt;/button>
-            &lt;button type="button" id="open2">Open layer2&lt;/button>
-        </pre></div>
-    </article>
-</section>
-
-<script>
-    var exampleResult = document.getElementById('example-result');
-    var exampleJs = document.getElementById('example-js');
-    var exampleHtml = document.getElementById('example-html');
-    var exampleResultBtn = document.getElementById('example-result-btn');
-    var exampleJsBtn = document.getElementById('example-js-btn');
-    var exampleHtmlBtn = document.getElementById('example-html-btn');
-
-    function setActive(el) {
-        el.className += ' active';
+        return collection.reduce(iteratee);
     }
 
-    function setInactive(el) {
-        el.className = el.className.replace(/\s*active\s*/g, '');
+    util.forEach(collection, function(value, index) {
+        if (typeof accumulator === 'undefined') {
+            accumulator = value;
+        } else {
+            accumulator = iteratee(accumulator, value, index);
+        }
+    });
+
+    return accumulator;
+}
+
+/**
+ * Removes all elements from array that predicate returns truthy for and
+ *  returns an array of the removed elements. The predicate is invoked with
+ *  three arguments: (value, index, array).
+ * @param {Array} array - The array to modify.
+ * @param {(Function|String|Number)} predicate - The function invoked per
+ *  iteration.
+ * @returns {Array} Returns the new array of removed elements.
+ * @ignore
+ */
+export function remove(array, predicate) {
+    let match;
+
+    if (util.isFunction(predicate)) {
+        match = function(v) {
+            return predicate(v);
+        };
+    } else {
+        match = function(v) {
+            return predicate === v;
+        };
     }
 
-    function show(el) {
-        el.className = el.className.replace(/\s*hidden\s*/g, '');
+    let removed = [];
+
+    for (let idx = 0, len = array.length; idx &lt; len; idx += 1) {
+        let value = array[idx];
+        if (match(value, idx, array)) {
+            removed.push(value);
+            array.splice(idx, 1);
+            len -= 1;
+            idx -= 1;
+        }
     }
 
-    function hide(el) {
-        el.className += ' hidden';
-    }
+    return removed;
+}
+</code></pre>
+        </article>
+    </section>
 
-    function showJs() {
-        hide(exampleHtml);
-        hide(exampleResult);
-        setInactive(exampleHtmlBtn);
-        setInactive(exampleResultBtn);
 
-        show(exampleJs);
-        setActive(exampleJsBtn);
-    }
 
-    function showHtml() {
-        hide(exampleJs);
-        hide(exampleResult);
-        setInactive(exampleJsBtn);
-        setInactive(exampleResultBtn);
-
-        show(exampleHtml);
-        setActive(exampleHtmlBtn);
-    }
-
-    function showResult() {
-        hide(exampleJs);
-        hide(exampleHtml);
-        setInactive(exampleJsBtn);
-        setInactive(exampleHtmlBtn);
-
-        show(exampleResult);
-        setActive(exampleResultBtn);
-    }
-</script>
 
 </div>
 
@@ -175,7 +156,11 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        showLnbExamples();
+        var id = '_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
+
+        $(element).removeClass('hidden');
+        showLnbApi();
     </script>
 
 </body>

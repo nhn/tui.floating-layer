@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Floating Layer</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Floating Layer</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    <ol class="lnb-tab">
+        <li id="api-tab">
+            <a href="#"><h4>API</h4></a>
+        </li>
+        <li id="examples-tab">
+            <a href="#"><h4>Examples</h4></a>
+        </li>
+    </ol>
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-default.html">Generate Floating Layer</a><div class="hidden" id="default_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="FloatingLayer.html">FloatingLayer</a><div class="hidden" id="FloatingLayer_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="FloatingLayer.html#boundCache">boundCache</a></li><li><a href="FloatingLayer.html#children">children</a></li><li><a href="FloatingLayer.html#container">container</a></li><li><a href="FloatingLayer.html#dimm">dimm</a></li><li><a href="FloatingLayer.html#id">id</a></li><li><a href="FloatingLayer.html#options">options</a></li><li><a href="FloatingLayer.html#parent">parent</a></li><li><a href="FloatingLayer.html#siblings">siblings</a></li><li><a href="FloatingLayer.html#zIndex">zIndex</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="FloatingLayer.html#addChild">addChild</a></li><li><a href="FloatingLayer.html#beforeDestroy">beforeDestroy</a></li><li><a href="FloatingLayer.html#clearProperties">clearProperties</a></li><li><a href="FloatingLayer.html#createFallbackElement">createFallbackElement</a></li><li><a href="FloatingLayer.html#destroy">destroy</a></li><li><a href="FloatingLayer.html#focus">focus</a></li><li><a href="FloatingLayer.html#getBound">getBound</a></li><li><a href="FloatingLayer.html#getLargestZIndex">getLargestZIndex</a></li><li><a href="FloatingLayer.html#hide">hide</a></li><li><a href="FloatingLayer.html#initialize">initialize</a></li><li><a href="FloatingLayer.html#recursive">recursive</a></li><li><a href="FloatingLayer.html#removeChild">removeChild</a></li><li><a href="FloatingLayer.html#render">render</a></li><li><a href="FloatingLayer.html#resize">resize</a></li><li><a href="FloatingLayer.html#setBound">setBound</a></li><li><a href="FloatingLayer.html#setContent">setContent</a></li><li><a href="FloatingLayer.html#show">show</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview The base class of views.
+ * @author NHN Ent. FE Development Team &lt;dl_javascript@nhnent.com>
+ */
+import * as core from './core';
+
+const util = tui.util;
+const dom = tui.dom;
+
+/**
+ * Property for represent all view instance element
+ * @type {string}
+ * @ignore
+ */
+const VIEW_PROP = 'feView';
+
+/**
+ * Basic view class
+ * @class
+ * @mixes tui.util.CustomEvents
+ * @ignore
+ */
+class View {
+    /**
+     * @param {HTMLElement} container - base container element
+     */
+    constructor(container) {
+        container = container || this.createFallbackElement();
+
+        /**
+         * Unique ID for each view instance
+         * @type {string}
+         */
+        this.id = String(View.id);
+
+        /**
+         * Base container element for each view instance
+         * @type {HTMLElement}
+         */
+        this.container = container;
+
+        /**
+         * Sub views
+         * @type {View[]}
+         */
+        this.children = [];
+
+        /**
+         * Parent view
+         * @type {View}
+         */
+        this.parent = null;
+
+        /**
+         * Cache for container bound
+         */
+        this.boundCache = null;
+
+        View.id += 1;
+        dom.setData(container, VIEW_PROP, this.id);
+    }
+
+    /**
+     * Invoke before destroying
+     */
+    beforeDestroy() {}
+
+    /**
+     * Clear instance properties for destroying
+     */
+    clearProperties() {
+        this.beforeDestroy();
+
+        dom.removeElement(this.container);
+
+        this.id = this.parent = this.children =
+            this.container = this.boundCache = null;
+    }
+
+    /**
+     * Destroy view instance
+     * @param {boolean} [onlyChildren=false] - set true then destroy only
+     *  children
+     */
+    destroy(onlyChildren = false) {
+        this.children.forEach(childView => {
+            childView.destroy();
+        });
+
+        if (onlyChildren) {
+            return;
+        }
+
+        this.clearProperties();
+    }
+
+    /**
+     * Get container's size and position. return bounds from
+     *  getBoundingClientRect()
+     *
+     * It return cached bounds until View.boundCache exists for performance iss
+     * ue. if you want re-calculate conatiner's bound then use bound setter or
+     * just clear boundCache
+     * property.
+     * @returns {object} size and position
+     */
+    getBound() {
+        let bound = this.boundCache;
+
+        if (!bound) {
+            bound = this.boundCache =
+                Object.assign({}, dom.getRect(this.container));
+        }
+
+        return bound;
+    }
+
+    /**
+     * Set container's size and position
+     * @param {object} options - options
+     * @param {number} [options.top] - top pixel
+     * @param {number} [options.right] - right pixel
+     * @param {number} [options.bottom] - bottom pixel
+     * @param {number} [options.left] - left pixel
+     * @param {number} [options.width] - width pixel
+     * @param {number} [options.height] - height pixel
+     */
+    setBound({top, right, bottom, left, width, height} = {}) {
+        dom.setBound(
+            this.container,
+            {top, right, bottom, left, width, height}
+        );
+
+        this.boundCache = null;
+    }
+
+    /**
+     * Create fallback element when invoke constructor without container
+     * @returns {HTMLElement} fallback division element
+     */
+    createFallbackElement() {
+        const el = document.createElement('div');
+        document.body.appendChild(el);
+
+        return el;
+    }
+
+    /**
+     * Add child view
+     * @param {View} view - child view to add
+     * @param {function} [before] - function that invoke before add
+     */
+    addChild(view, before = core.noop) {
+        const children = this.children;
+
+        if (children.findIndex(v => view === v) > -1) {
+            return;
+        }
+
+        before.call(view, this);
+
+        // add parent view
+        view.parent = this;
+
+        children.push(view);
+    }
+
+    /**
+     * Remove child views
+     * @param {string|View} id - child view id or instance itself
+     * @param {function} [before] - function that invoke before remove
+     */
+    removeChild(id, before) {
+        const children = this.children;
+        const _id = util.isString(id) ? id : id.id;
+        const index = children.findIndex(v => _id === v.id);
+
+        before = before || core.noop;
+
+        if (index &lt; 0) {
+            return;
+        }
+
+        let view = children[index];
+
+        before.call(view, this);
+
+        children.splice(index, 1);
+    }
+
+    /**
+     * Render view recursively
+     */
+    render() {
+        this.children.forEach(childView => {
+            childView.render();
+        });
+    }
+
+    /**
+     * Invoke function recursively.
+     * @param {function} iteratee - function to invoke child view recursively
+     * @param {boolean} [skipThis=false] - set true then skip invoke with
+     *  this(root) view.
+     */
+    recursive(iteratee = core.noop, skipThis = false) {
+        if (!skipThis) {
+            iteratee(this);
+        }
+
+        this.children.forEach(childView => {
+            childView.recursive(iteratee);
+        });
+    }
+
+    /**
+     * Resize view recursively to parent.
+     * @param {...*} [args] - arguments for supplied to each parent view.
+     */
+    resize(...args) {
+        let parent = this.parent;
+
+        while (parent) {
+            if (util.isFunction(parent._onResize)) {
+                parent._onResize.apply(parent, args);
+            }
+
+            parent = parent.parent;
+        }
+    }
+}
+
+/**
+ * @static
+ */
+View.id = 0;
+
+tui.util.CustomEvents.mixin(View);
+
+export default View;
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
+
+        $(element).removeClass('hidden');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
