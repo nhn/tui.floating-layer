@@ -5,19 +5,25 @@
 import * as core from './core';
 
 const util = tui.util;
+const dom = tui.dom;
 
 /**
  * Property for represent all view instance element
  * @type {string}
+ * @ignore
  */
 const VIEW_PROP = 'feView';
 
 /**
  * Basic view class
+ * @class
  * @mixes tui.util.CustomEvents
- * @param {HTMLElement} container - base container element
+ * @ignore
  */
-export default class View {
+class View {
+    /**
+     * @param {HTMLElement} container - base container element
+     */
     constructor(container) {
         container = container || this.createFallbackElement();
 
@@ -230,3 +236,6 @@ export default class View {
 View.id = 0;
 
 tui.util.CustomEvents.mixin(View);
+
+export default View;
+

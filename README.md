@@ -12,7 +12,8 @@ FloatingLayer Component
 
 ## Dependency
 * tui-code-snippet : 1.2.0
-* tui-domutil : 1.0.4
+* tui-domutil : 2.1.0
+* (For IE8 ~) [babel-polyfill](https://babeljs.io/docs/usage/polyfill/)
 
 ## Test environment
 * browser
@@ -23,7 +24,7 @@ FloatingLayer Component
 
 ## Download/Install
 * Bower :
-   * Latest : `bower install tui-component-floatinglayer#master`
+   * Latest : `bower install tui-component-floatinglayer`
    * Each Version : `bower install tui-component-floatinglayer[#tag]`
 * Download : https://github.com/nhnent/tui.component.floatinglayer
 

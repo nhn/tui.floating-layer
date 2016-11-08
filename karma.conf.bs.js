@@ -10,10 +10,11 @@ module.exports = function(config) {
             'fixture'
         ],
         files: [
-            'floatinglayer.css',
+            'dist/floatingLayer.css',
+            'node_modules/babel-polyfill/dist/polyfill.js',
             'bower_components/tui-code-snippet/code-snippet.js',
-            'bower_components/tui-domutil/domutil.js',
-            'floatinglayer.js',
+            'bower_components/tui-dom/dist/domutil.js',
+            'dist/floatingLayer.js',
             'test/*.js'
         ],
         reporters: [

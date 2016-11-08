@@ -3,35 +3,25 @@
     <head>
         <meta charset="utf-8" />
         <title>FloatingLayer DEMO</title>
-        <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
-        <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
-        <link type="text/css" rel="stylesheet" href="../styles/tui.css">
-
-        <link rel="stylesheet" type="text/css" href="css/floatinglayer.css" />
+        <link rel="stylesheet" type="text/css" href="../dist/floatinglayer.css" />
         <style>
         #modal {background-color: #eee; width:100%;height:100%}
         #modaless {background-color: #ccc;width:100%;height:100%}
         </style>
     </head>
     <body>
-        <div class="wrap" style="height: 500px;">
+        <div class="code-html">
             <div id="fl"></div>
             <button type="button" id="open1">Open layer1 (modal)</button>
             <button type="button" id="open2">Open layer2</button>
         </div>
 
-        <div class="codeArea"></div>
-
-        <script src="js/code-snippet.js"></script>
-        <script src="js/domutil.js"></script>
-        <script src="js/floatinglayer.js"></script>
-
-        <script src="../scripts/prettify/prettify.js"></script>
-        <script src="../scripts/prettify/lang-css.js"></script>
-        <script src="../scripts/jquery.js"></script>
-        <script src="../scripts/samplecode.js"></script>
-
-        <script class="serviceCode">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.16.0/polyfill.js"></script>
+        <script src="//cdn.rawgit.com/nhnent/tui.code-snippet/1.2.1/code-snippet.min.js"></script>
+        <script src="//cdn.rawgit.com/nhnent/tui.dom/2.1.0/dist/domutil.js"></script>
+        <script src="../dist/floatinglayer.js"></script>
+        <script class="code-js">
+        var dom = tui.dom;
         var container = dom.find('#fl');
 
         var layer = new tui.component.FloatingLayer(container);
