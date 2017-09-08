@@ -1,34 +1,35 @@
-var FloatingLayer = tui.component.FloatingLayer;
 
-describe('FloatingLayer', function() {
-    var container;
+import FloatingLayer from '../src/js/floatingLayer';
 
-    beforeEach(function() {
+describe('FloatingLayer', () => {
+    let container;
+
+    beforeEach(() => {
         fixture.set('<div id="target"></div>');
         container = document.querySelector('#target');
     });
 
-    afterEach(function() {
+    afterEach(() => {
         fixture.cleanup();
     });
 
-    it('should be modaless floating layer.', function() {
-        var modaless = new FloatingLayer(container, {modaless: true});
+    it('should be modaless floating layer.', () => {
+        const modaless = new FloatingLayer(container, {modaless: true});
 
         expect(modaless.options.modaless).toBe(true);
         expect(document.querySelector('.floating-layer-dimm')).toBeFalsy();
     });
 
-    it('should be modal floating layer.', function() {
-        var modal = new FloatingLayer(container);
+    it('should be modal floating layer.', () => {
+        const modal = new FloatingLayer(container);
 
         expect(modal.options.modaless).toBe(false);
         expect(document.querySelector('.floating-layer-dimm')).toBeTruthy();
     });
 
-    it('should remove property when no layer after destroying layer.', function() {
-        var f1 = new FloatingLayer(container),
-            f2 = new FloatingLayer(container);
+    it('should remove property when no layer after destroying layer.', () => {
+        const f1 = new FloatingLayer(container);
+        const f2 = new FloatingLayer(container);
 
         f1.destroy();
         f2.destroy();
@@ -36,8 +37,8 @@ describe('FloatingLayer', function() {
         expect(container._floatingLayer).toBeUndefined();
     });
 
-    it('should remove layer and dimm after destroying layer.', function() {
-        var f1 = new FloatingLayer(container);
+    it('should remove layer and dimm after destroying layer.', () => {
+        const f1 = new FloatingLayer(container);
 
         f1.destroy();
 
