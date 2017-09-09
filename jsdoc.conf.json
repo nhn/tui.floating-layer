@@ -20,6 +20,7 @@
         "recurse": true,
         "destination": "doc",
         "tutorials": "examples",
-        "package": "package.json"
+        "package": "package.json",
+        "template": "./node_modules/tui-jsdoc-template"
     }
 }

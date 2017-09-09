@@ -28,7 +28,7 @@ module.exports = {
         library: ['tui', 'FloatingLayer'],
         libraryTarget: 'umd',
         path: 'dist',
-        publicPath: 'dist',
+        publicPath: 'dist/',
         filename: FILENAME
     },
     externals: {
@@ -41,7 +41,7 @@ module.exports = {
         'tui-dom': {
             'commonjs': 'tui-dom',
             'commonjs2': 'tui-dom',
-            'amd': 'tui-code-dom',
+            'amd': 'tui-dom',
             'root': ['tui', 'dom']
         }
     },

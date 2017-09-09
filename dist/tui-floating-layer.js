@@ -8,7 +8,7 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("tui-dom"), require("tui-code-snippet"));
 	else if(typeof define === 'function' && define.amd)
-		define(["tui-code-dom", "tui-code-snippet"], factory);
+		define(["tui-dom", "tui-code-snippet"], factory);
 	else if(typeof exports === 'object')
 		exports["FloatingLayer"] = factory(require("tui-dom"), require("tui-code-snippet"));
 	else
@@ -50,7 +50,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "dist";
+/******/ 	__webpack_require__.p = "dist/";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
