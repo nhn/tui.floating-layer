@@ -1,36 +1,71 @@
-FloatingLayer
-===============
+# FloatingLayer
+
 FloatingLayer Component
 
 ## Feature
-* The layer is created on the page for a modal or popup.
+* Create Modal/Modaless Layer
 
 ## Documentation
-* **API** : https://nhnent.github.io/tui.component.floatinglayer/latest
-* **Tutorial** : https://github.com/nhnent/tui.component.floatinglayer/wiki/FloatingLayer-Tutorial
-* **Sample** : https://nhnent.github.io/tui.component.floatinglayer/latest/tutorial-default.html
+* **API** : [https://nhnent.github.io/tui.floating-layer/latest](https://nhnent.github.io/tui.floating-layer/latest)
+* **Tutorial** : [https://github.com/nhnent/tui.floating-layer/wiki](https://github.com/nhnent/tui.floating-layer/wiki)
+* **Example** : [https://nhnent.github.io/tui.floating-layer/latest/tutorial-example01-basic-usage.html](https://nhnent.github.io/tui.floating-layer/latest/tutorial-example01-basic-usage.html)
 
 ## Dependency
-* tui-code-snippet : 1.2.0
-* tui-domutil : 2.1.0
-* (For IE8 ~) [babel-polyfill](https://babeljs.io/docs/usage/polyfill/)
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) ^1.2.5
+* [tui-dom](https://github.com/nhnent/tui.dom) ^3.0.0
 
 ## Test environment
-* browser
-	* IE8+
-	* Edge
-	* Chrome
-	* Firefox
+### PC
+* IE8~11
+* Edge
+* Chrome
+* Firefox
+* Safari
 
-## Download/Install
-* Bower :
-   * Latest : `bower install tui-component-floatinglayer`
-   * Each Version : `bower install tui-component-floatinglayer[#tag]`
-* Download : https://github.com/nhnent/tui.component.floatinglayer
+## Usage
+### Use `npm`
 
-## LICENSE
-[MIT LICENSE](LICENSE)
+Install the latest version using `npm` command:
 
-## Sponsor
-* <img src="https://cloud.githubusercontent.com/assets/12269563/12287774/8cf4d2c0-ba12-11e5-9fa8-0a9c452cca05.png" height="30"><br>
- [BrowserStack](https://www.browserstack.com/) is a cloud based cross browser testing tool
+```
+$ npm install tui-floating-layer --save
+```
+
+or want to install the each version:
+
+```
+$ npm install tui-floating-layer@<version> --save
+```
+
+To access as module format in your code:
+
+```javascript
+var FloatingLayer = require('tui-floating-layer');
+var instance = new FloatingLayer(...);
+```
+
+### Use `bower`
+Install the latest version using `bower` command:
+
+```
+$ bower install tui-floating-layer
+```
+
+or want to install the each version:
+
+```
+$ bower install tui-floating-layer#<tag>
+```
+
+To access as namespace format in your code:
+
+```javascript
+var instance = new tui.FloatingLayer(...);
+```
+
+### Download
+* [Download bundle files from `dist` folder](https://github.com/nhnent/tui.floating-layer/tree/production/dist)
+* [Download all sources for each version](https://github.com/nhnent/tui.floating-layer/releases)
+
+## License
+[MIT LICENSE](https://github.com/nhnent/tui.floating-layer/blob/master/LICENSE)

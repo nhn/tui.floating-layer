@@ -1,34 +1,27 @@
 {
-  "name": "tui-component-floatinglayer",
-  "description": "floating layer component",
-  "authors": [
-    "NHNEnt FE Development Team <dl_javascript@nhnent.com>"
-  ],
-  "license": "MIT",
-  "keywords": [
-    "floatinglayer"
-  ],
-  "homepage": "",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests",
-    "src",
-    "demo",
-    "samples",
-    ".gitignore",
-    ".eslintrc.json",
-    "index.js",
-    "jsdoc-conf.json",
-    "karma.conf.js",
-    "karma.conf.*.js",
-    "package.json",
-    "bower.json"
-  ],
-  "dependencies": {
-    "tui-code-snippet": "^1.2.0",
-    "tui-dom": "^2.1.0"
-  }
+    "name": "tui-floating-layer",
+    "authors": [
+        "NHNent. FE Development Lab <dl_javascript@nhnent.com>"
+    ],
+    "main": [
+        "dist/tui-floating-layer.js",
+        "dist/tui-floating-layer.css"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "examples",
+        "src",
+        "test",
+        "jsdoc.conf.json",
+        "karma.conf.js",
+        "webpack.config.js",
+        "package.json"
+    ],
+    "dependencies": {
+        "tui-code-snippet": "^1.2.5",
+        "tui-dom": "^3.0.0"
+    }
 }

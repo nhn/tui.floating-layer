@@ -2,7 +2,7 @@
  * @fileoverview Core utility methods module
  * @author NHN Ent. FE Development team <dl_javascript@nhnent.com>
  */
-const util = tui.util;
+import snippet from 'tui-code-snippet';
 
 /**
  * A no-operation function that returns undefined regardless of the arguments
@@ -18,9 +18,22 @@ export function noop() {}
  * @ignore
  */
 export function uniq(array) {
-    return [...new Set(array)];
-}
+    const map = new snippet.ExMap();
 
+    snippet.forEach(array, element => {
+        if (!map.get(element)) {
+            map.set(element, element);
+        }
+    });
+
+    const uniqArray = [];
+
+    map.forEach(value => {
+        uniqArray.push(value);
+    });
+
+    return uniqArray;
+}
 
 /**
  * @param {Collection} collection - The collection to iterate over.
@@ -30,7 +43,7 @@ export function uniq(array) {
  * @ignore
  */
 export function reduce(collection, iteratee, accumulator) {
-    if (util.isArray(collection)) {
+    if (snippet.isArray(collection)) {
         if (accumulator) {
             return collection.reduce(iteratee, accumulator);
         }
@@ -38,7 +51,7 @@ export function reduce(collection, iteratee, accumulator) {
         return collection.reduce(iteratee);
     }
 
-    util.forEach(collection, function(value, index) {
+    snippet.forEach(collection, (value, index) => {
         if (typeof accumulator === 'undefined') {
             accumulator = value;
         } else {
@@ -62,7 +75,7 @@ export function reduce(collection, iteratee, accumulator) {
 export function remove(array, predicate) {
     let match;
 
-    if (util.isFunction(predicate)) {
+    if (snippet.isFunction(predicate)) {
         match = function(v) {
             return predicate(v);
         };
@@ -72,10 +85,11 @@ export function remove(array, predicate) {
         };
     }
 
-    let removed = [];
+    const removed = [];
 
     for (let idx = 0, len = array.length; idx < len; idx += 1) {
-        let value = array[idx];
+        const value = array[idx];
+
         if (match(value, idx, array)) {
             removed.push(value);
             array.splice(idx, 1);

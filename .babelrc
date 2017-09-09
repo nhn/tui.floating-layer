@@ -1,7 +1,10 @@
 {
-    presets: ["es2015"],
-    plugins: [
+    "presets": ["es2015"],
+    "plugins": [
         ["transform-es2015-classes", {"loose": true}],
+        ["transform-es2015-spread", {"loose": true}],
+        ["transform-es2015-modules-commonjs", {"loose": true}],
+        "transform-object-assign",
         "transform-es3-property-literals",
         "transform-es3-member-expression-literals"
     ]

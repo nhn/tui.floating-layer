@@ -3,9 +3,8 @@
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
 import * as core from './core';
-
-const util = tui.util;
-const dom = tui.dom;
+import * as dom from 'tui-dom';
+import snippet from 'tui-code-snippet';
 
 /**
  * Property for represent all view instance element
@@ -16,8 +15,8 @@ const VIEW_PROP = 'feView';
 
 /**
  * Basic view class
- * @class
- * @mixes tui.util.CustomEvents
+ * @class View
+ * @mixes snippet.CustomEvents
  * @ignore
  */
 class View {
@@ -73,8 +72,11 @@ class View {
 
         dom.removeElement(this.container);
 
-        this.id = this.parent = this.children =
-            this.container = this.boundCache = null;
+        this.id = null;
+        this.parent = null;
+        this.children = null;
+        this.container = null;
+        this.boundCache = null;
     }
 
     /**
@@ -140,6 +142,7 @@ class View {
      */
     createFallbackElement() {
         const el = document.createElement('div');
+
         document.body.appendChild(el);
 
         return el;
@@ -151,9 +154,9 @@ class View {
      * @param {function} [before] - function that invoke before add
      */
     addChild(view, before = core.noop) {
-        const children = this.children;
+        const {children} = this;
 
-        if (children.findIndex(v => view === v) > -1) {
+        if (snippet.filter(children, child => view === child).length) {
             return;
         }
 
@@ -171,9 +174,15 @@ class View {
      * @param {function} [before] - function that invoke before remove
      */
     removeChild(id, before) {
-        const children = this.children;
-        const _id = util.isString(id) ? id : id.id;
-        const index = children.findIndex(v => _id === v.id);
+        const {children} = this;
+        const _id = snippet.isString(id) ? id : id.id;
+        let index = -1;
+
+        snippet.forEach(children, (child, childIndex) => {
+            if (index === -1 && _id === child.id) {
+                index = childIndex;
+            }
+        });
 
         before = before || core.noop;
 
@@ -181,7 +190,7 @@ class View {
             return;
         }
 
-        let view = children[index];
+        const view = children[index];
 
         before.call(view, this);
 
@@ -218,11 +227,11 @@ class View {
      * @param {...*} [args] - arguments for supplied to each parent view.
      */
     resize(...args) {
-        let parent = this.parent;
+        let {parent} = this;
 
         while (parent) {
-            if (util.isFunction(parent._onResize)) {
-                parent._onResize.apply(parent, args);
+            if (snippet.isFunction(parent._onResize)) {
+                parent._onResize(...args);
             }
 
             parent = parent.parent;
@@ -235,7 +244,7 @@ class View {
  */
 View.id = 0;
 
-tui.util.CustomEvents.mixin(View);
+snippet.CustomEvents.mixin(View);
 
 export default View;
 

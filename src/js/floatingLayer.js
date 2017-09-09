@@ -2,15 +2,16 @@
  * @fileoverview Module for managing non zero z-index division on viewport
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+import * as dom from 'tui-dom';
 import View from './view';
+import snippet from 'tui-code-snippet';
 
-const VIEW_PROP = '_floatingLayer';
+const VIEW_PROP__FLOATING_LAYER = '_floatingLayer';
 const DEFAULT_ZINDEX = 999;
-const dom = tui.dom;
 
 /**
  * Create layer for floating ui
- * @params {...string} [cssClass] - css classes
+ * @param {...string} [cssClass] - css classes
  * @returns {HTMLElement} layer
  * @ignore
  */
@@ -29,92 +30,112 @@ export function createLayer(...cssClass) {
     return layer;
 }
 
-/**
- * Class for managing floating layers
- * @class
- * @extends View
- */
-class FloatingLayer extends View {
+export default snippet.defineClass(View, {
     /**
+     * @classdesc Class for managing floating layers
+     * @class FloatingLayer
+     * @extends View
+     * @constructs FloatingLayer
      * @param {HTMLElement} [container] - base container element
      * @param {object} [object] - options for FloatingLayer
      *   @param {boolean} [options.modaless=false] - set true for create floating
      *    layer without dimmed layer
-     * @example
-     * var layer = new tui.component.FloatingLayer(document.querySelector('#fl'));
+     * @example <caption>CommonJS entry</caption>
+     * var FloatingLayer = require('tui-floating-layer');
+     * var instance = new FloatingLayer(document.querySelector'#f1');
+     * @example <caption>global namespace</caption>
+     * var layer = new tui.FloatingLayer(document.querySelector('#fl'));
      */
-    constructor(container, {modaless = false} = {}) {
-        super(createLayer('floating-layer'));
+    init(container, {modaless = false} = {}) {
+        View.call(this, createLayer('floating-layer')); // this.container = div#floatingLayer
 
         /**
          * @type {object}
+         * @name options
+         * @memberof FloatingLayer
          */
         this.options = Object.assign({}, {modaless});
 
         /**
          * @type {HTMLElement}
+         * @name parent
+         * @override View
+         * @memberof FloatingLayer#
          */
         this.parent = container;
 
         /**
          * @type {number}
+         * @name zIndex
+         * @memberof FloatingLayer#
          */
         this.zIndex = DEFAULT_ZINDEX;
 
         /**
          * @type {HTMLElement}
+         * @name dimm
+         * @memberof FloatingLayer#
          */
         this.dimm = null;
 
         /**
          * @type {object}
+         * @name siblings
+         * @memberof FloatingLayer#
          */
         this.siblings = null;
 
-        this.initialize(container);
-    }
+        this.initialize();
+    },
 
     /**
      * Initialize floating layer instance
-     * @param {HTMLElement} container - element to base of several floating
      *  layers not floating layer itself
+     * @memberof FloatingLayer.prototype
      */
-    initialize(container) {
-        let siblings = container[VIEW_PROP];
+    initialize() {
+        const {parent} = this;
 
-        if (!siblings) {
-            siblings = container[VIEW_PROP] = new Set();
+        if (!parent[VIEW_PROP__FLOATING_LAYER]) {
+            parent[VIEW_PROP__FLOATING_LAYER] = {length: 0};
         }
 
-        siblings.add(this);
+        const key = dom.getData(this.container, 'fe-view');
 
-        this.siblings = siblings;
+        this.siblings = parent[VIEW_PROP__FLOATING_LAYER];
+
+        if (!this.siblings[key]) {
+            this.siblings[key] = this;
+            this.siblings.length += 1;
+        }
 
         this.zIndex = this.getLargestZIndex() + 1;
 
         if (!this.options.modaless) {
-            let dimm = this.dimm = createLayer('floating-layer-dimm');
+            this.dimm = createLayer('floating-layer-dimm');
 
-            dom.css(dimm, 'position', 'fixed');
-            dom.setBound(dimm, {top: 0, right: 0, bottom: 0, left: 0});
+            dom.css(this.dimm, 'position', 'fixed');
+            dom.setBound(this.dimm, {top: 0, right: 0, bottom: 0, left: 0});
 
-            container.appendChild(dimm);
+            this.parent.appendChild(this.dimm);
         }
 
-        container.appendChild(this.container);
-    }
+        this.parent.appendChild(this.container);
+    },
 
     /**
      * Destroy floating layer. no layer after destroying then
+     * @memberof FloatingLayer.prototype
      */
     beforeDestroy() {
-        const siblings = this.siblings;
-        const parent = this.parent;
+        const {siblings, parent} = this;
+        const key = dom.getData(this.container, 'fe-view');
 
-        siblings.delete(this);
+        delete siblings[key];
+        this.siblings.length -= 1;
 
-        if (!siblings.size) {
-            delete parent[VIEW_PROP];
+        if (!siblings.length) {
+            delete parent[VIEW_PROP__FLOATING_LAYER];
             dom.css(parent, 'position', '');
         }
 
@@ -122,27 +143,30 @@ class FloatingLayer extends View {
         dom.removeElement(this.dimm);
 
         this.options = this.siblings = this.zIndex = null;
-    }
+    },
 
     /**
      * Destructor
      * @override
+     * @memberof FloatingLayer.prototype
      */
     destroy() {
         View.prototype.destroy.call(this);
-    }
+    },
 
     /**
      * Set layer content
      * @param {string} html - html string
+     * @memberof FloatingLayer.prototype
      */
     setContent(html) {
         this.container.innerHTML = html;
-    }
+    },
 
     /**
      * Get largest z-index value in this container
      * @returns {number}
+     * @memberof FloatingLayer.prototype
      */
     getLargestZIndex() {
         const indexes = [...this.siblings].map(fl => fl.zIndex);
@@ -150,10 +174,11 @@ class FloatingLayer extends View {
         indexes.push(DEFAULT_ZINDEX);
 
         return Math.max(...indexes);
-    }
+    },
 
     /**
      * Set focus to layer
+     * @memberof FloatingLayer.prototype
      */
     focus() {
         const largestZIndex = this.getLargestZIndex();
@@ -166,10 +191,11 @@ class FloatingLayer extends View {
         if (!this.options.modaless) {
             dom.css(this.dimm, 'zIndex', (this.zIndex - 1));
         }
-    }
+    },
 
     /**
      * Show layer
+     * @memberof FloatingLayer.prototype
      */
     show() {
         this.focus();
@@ -178,10 +204,11 @@ class FloatingLayer extends View {
         if (!this.options.modaless) {
             dom.css(this.dimm, 'display', 'block');
         }
-    }
+    },
 
     /**
      * Hide layer
+     * @memberof FloatingLayer.prototype
      */
     hide() {
         dom.css(this.container, 'display', 'none');
@@ -190,6 +217,4 @@ class FloatingLayer extends View {
             dom.css(this.dimm, 'display', 'none');
         }
     }
-}
-
-export default FloatingLayer;
+});
