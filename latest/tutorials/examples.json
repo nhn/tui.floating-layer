@@ -1,5 +1,5 @@
 {
-    "default": {
-      "title": "Generate Floating Layer"
+    "example01-basic": {
+        "title": "1. Basic"
     }
 }
