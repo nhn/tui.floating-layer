@@ -1,5 +1,4 @@
 # FloatingLayer
-
 FloatingLayer Component
 
 ## Feature
@@ -8,11 +7,11 @@ FloatingLayer Component
 ## Documentation
 * **API** : [https://nhnent.github.io/tui.floating-layer/latest](https://nhnent.github.io/tui.floating-layer/latest)
 * **Tutorial** : [https://github.com/nhnent/tui.floating-layer/wiki](https://github.com/nhnent/tui.floating-layer/wiki)
-* **Example** : [https://nhnent.github.io/tui.floating-layer/latest/tutorial-example01-basic-usage.html](https://nhnent.github.io/tui.floating-layer/latest/tutorial-example01-basic-usage.html)
+* **Example** : [https://nhnent.github.io/tui.floating-layer/latest/tutorial-example01-basic.html](https://nhnent.github.io/tui.floating-layer/latest/tutorial-example01-basic.html)
 
 ## Dependency
-* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) ^1.2.5
-* [tui-dom](https://github.com/nhnent/tui.dom) ^3.0.0
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.2.5
+* [tui-dom](https://github.com/nhnent/tui.dom) >=3.0.0
 
 ## Test environment
 ### PC
