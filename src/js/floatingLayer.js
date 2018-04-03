@@ -10,6 +10,23 @@ const VIEW_PROP__FLOATING_LAYER = '_floatingLayer';
 const DEFAULT_ZINDEX = 999;
 
 /**
+ * Send information to google analytics
+ * @ignore
+ */
+export function sendHostNameToGA() {
+    const {hostname} = location;
+
+    snippet.imagePing('https://www.google-analytics.com/collect', {
+        v: 1,
+        t: 'event',
+        tid: 'UA-115377265-9',
+        cid: hostname,
+        dp: hostname,
+        dh: 'floating-layer'
+    });
+}
+
+/**
  * Create layer for floating ui
  * @param {...string} [cssClass] - css classes
  * @returns {HTMLElement} layer
@@ -38,15 +55,20 @@ export default snippet.defineClass(View, {
      * @constructs FloatingLayer
      * @param {HTMLElement} [container] - base container element
      * @param {object} [object] - options for FloatingLayer
-     *   @param {boolean} [options.modaless=false] - set true for create floating
-     *    layer without dimmed layer
+     *     @param {boolean} [options.modaless=false] - set true for create floating
+     *         layer without dimmed layer
+     *     @param {boolean} [options.usageStatistics=true] Send the host name to google analytics.
+     *         If you do not want to send the host name, this option set to false.
      * @example <caption>CommonJS entry</caption>
      * var FloatingLayer = require('tui-floating-layer');
      * var instance = new FloatingLayer(document.querySelector'#f1');
      * @example <caption>global namespace</caption>
      * var layer = new tui.FloatingLayer(document.querySelector('#fl'));
      */
-    init(container, {modaless = false} = {}) {
+    init(container, {
+        modaless = false,
+        usageStatistics = true
+    } = {}) {
         View.call(this, createLayer('floating-layer')); // this.container = div#floatingLayer
 
         /**
@@ -54,7 +76,10 @@ export default snippet.defineClass(View, {
          * @name options
          * @memberof FloatingLayer
          */
-        this.options = Object.assign({}, {modaless});
+        this.options = Object.assign({}, {
+            modaless,
+            usageStatistics
+        });
 
         /**
          * @type {HTMLElement}
@@ -86,6 +111,10 @@ export default snippet.defineClass(View, {
         this.siblings = null;
 
         this.initialize();
+
+        if (this.options.usageStatistics) {
+            sendHostNameToGA();
+        }
     },
 
     /**
