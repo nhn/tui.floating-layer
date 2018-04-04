@@ -1,6 +1,6 @@
 /*!
  * tui-floating-layer.js
- * @version 2.0.0
+ * @version 2.1.0
  * @author NHNEnt FE Development Team <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -95,7 +95,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                   */
 
 
-	exports.createLayer = createLayer;
+	exports.sendHostNameToGA = sendHostNameToGA;
 
 	var _tuiDom = __webpack_require__(6);
 
@@ -115,6 +115,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var VIEW_PROP__FLOATING_LAYER = '_floatingLayer';
 	var DEFAULT_ZINDEX = 999;
+
+	/**
+	 * Send information to google analytics
+	 * @ignore
+	 */
+	function sendHostNameToGA() {
+	    var _location = location,
+	        hostname = _location.hostname;
+
+
+	    _tuiCodeSnippet2['default'].imagePing('https://www.google-analytics.com/collect', {
+	        v: 1,
+	        t: 'event',
+	        tid: 'UA-115377265-9',
+	        cid: hostname,
+	        dp: hostname,
+	        dh: 'floating-layer'
+	    });
+	}
 
 	/**
 	 * Create layer for floating ui
@@ -141,73 +160,75 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return layer;
 	}
 
-	exports['default'] = _tuiCodeSnippet2['default'].defineClass(_view2['default'], {
-	    /**
-	     * @classdesc Class for managing floating layers
-	     * @class FloatingLayer
-	     * @extends View
-	     * @constructs FloatingLayer
-	     * @param {HTMLElement} [container] - base container element
-	     * @param {object} [object] - options for FloatingLayer
-	     *   @param {boolean} [options.modaless=false] - set true for create floating
-	     *    layer without dimmed layer
-	     * @example <caption>CommonJS entry</caption>
-	     * var FloatingLayer = require('tui-floating-layer');
-	     * var instance = new FloatingLayer(document.querySelector'#f1');
-	     * @example <caption>global namespace</caption>
-	     * var layer = new tui.FloatingLayer(document.querySelector('#fl'));
-	     */
+	/**
+	 * @classdesc Class for managing floating layers
+	 * @class FloatingLayer
+	 * @param {HTMLElement} [container] - base container element
+	 * @param {object} [object] - options for FloatingLayer
+	 *     @param {boolean} [options.modaless=false] - set true for create floating
+	 *         layer without dimmed layer
+	 *     @param {boolean} [options.usageStatistics=true] Send the hostname to google analytics.
+	 *         If you do not want to send the hostname, this option set to false.
+	 * @example <caption>CommonJS entry</caption>
+	 * var FloatingLayer = require('tui-floating-layer');
+	 * var instance = new FloatingLayer(document.querySelector'#f1');
+	 * @example <caption>global namespace</caption>
+	 * var layer = new tui.FloatingLayer(document.querySelector('#fl'));
+	 */
+	exports['default'] = _tuiCodeSnippet2['default'].defineClass(_view2['default'], /** @lends FloatingLayer.prototype */{
 	    init: function init(container) {
 	        var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
 	            _ref$modaless = _ref.modaless,
-	            modaless = _ref$modaless === undefined ? false : _ref$modaless;
+	            modaless = _ref$modaless === undefined ? false : _ref$modaless,
+	            _ref$usageStatistics = _ref.usageStatistics,
+	            usageStatistics = _ref$usageStatistics === undefined ? true : _ref$usageStatistics;
 
-	        _view2['default'].call(this, createLayer('floating-layer')); // this.container = div#floatingLayer
+	        _view2['default'].call(this, createLayer('floating-layer'));
 
 	        /**
 	         * @type {object}
-	         * @name options
-	         * @memberof FloatingLayer
+	         * @private
 	         */
-	        this.options = _extends({}, { modaless: modaless });
+	        this.options = _extends({}, {
+	            modaless: modaless,
+	            usageStatistics: usageStatistics
+	        });
 
 	        /**
 	         * @type {HTMLElement}
-	         * @name parent
-	         * @override View
-	         * @memberof FloatingLayer#
+	         * @private
 	         */
 	        this.parent = container;
 
 	        /**
 	         * @type {number}
-	         * @name zIndex
-	         * @memberof FloatingLayer#
+	         * @private
 	         */
 	        this.zIndex = DEFAULT_ZINDEX;
 
 	        /**
 	         * @type {HTMLElement}
-	         * @name dimm
-	         * @memberof FloatingLayer#
+	         * @private
 	         */
 	        this.dimm = null;
 
 	        /**
 	         * @type {object}
-	         * @name siblings
-	         * @memberof FloatingLayer#
+	         * @private
 	         */
 	        this.siblings = null;
 
 	        this.initialize();
+
+	        if (this.options.usageStatistics) {
+	            sendHostNameToGA();
+	        }
 	    },
 
 
 	    /**
-	     * Initialize floating layer instance
-	     *  layers not floating layer itself
-	     * @memberof FloatingLayer.prototype
+	     * Initialize floating layer instance layers not floating layer itself
+	     * @private
 	     */
 	    initialize: function initialize() {
 	        var parent = this.parent;
@@ -243,7 +264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Destroy floating layer. no layer after destroying then
-	     * @memberof FloatingLayer.prototype
+	     * @private
 	     */
 	    beforeDestroy: function beforeDestroy() {
 	        var siblings = this.siblings,
@@ -269,7 +290,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Destructor
 	     * @override
-	     * @memberof FloatingLayer.prototype
 	     */
 	    destroy: function destroy() {
 	        _view2['default'].prototype.destroy.call(this);
@@ -279,7 +299,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Set layer content
 	     * @param {string} html - html string
-	     * @memberof FloatingLayer.prototype
+	     * @private
 	     */
 	    setContent: function setContent(html) {
 	        this.container.innerHTML = html;
@@ -289,7 +309,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Get largest z-index value in this container
 	     * @returns {number}
-	     * @memberof FloatingLayer.prototype
+	     * @private
 	     */
 	    getLargestZIndex: function getLargestZIndex() {
 	        var indexes = [].concat(this.siblings).map(function (fl) {
@@ -304,7 +324,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Set focus to layer
-	     * @memberof FloatingLayer.prototype
 	     */
 	    focus: function focus() {
 	        var largestZIndex = this.getLargestZIndex();
@@ -322,7 +341,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Show layer
-	     * @memberof FloatingLayer.prototype
 	     */
 	    show: function show() {
 	        this.focus();
@@ -336,7 +354,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Hide layer
-	     * @memberof FloatingLayer.prototype
 	     */
 	    hide: function hide() {
 	        dom.css(this.container, 'display', 'none');
@@ -394,7 +411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * Basic view class
-	 * @class View
+	 * @class
 	 * @mixes snippet.CustomEvents
 	 * @ignore
 	 */
@@ -402,6 +419,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var View = function () {
 	    /**
 	     * @param {HTMLElement} container - base container element
+	     * @constructor
 	     */
 	    function View(container) {
 	        _classCallCheck(this, View);
@@ -411,29 +429,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	        /**
 	         * Unique ID for each view instance
 	         * @type {string}
+	         * @private
 	         */
 	        this.id = String(View.id);
 
 	        /**
 	         * Base container element for each view instance
 	         * @type {HTMLElement}
+	         * @private
 	         */
 	        this.container = container;
 
 	        /**
 	         * Sub views
 	         * @type {View[]}
+	         * @private
 	         */
 	        this.children = [];
 
 	        /**
 	         * Parent view
 	         * @type {View}
+	         * @private
 	         */
 	        this.parent = null;
 
 	        /**
 	         * Cache for container bound
+	         * @private
 	         */
 	        this.boundCache = null;
 
@@ -443,6 +466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Invoke before destroying
+	     * @private
 	     */
 
 
@@ -450,6 +474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Clear instance properties for destroying
+	     * @private
 	     */
 
 
@@ -467,8 +492,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Destroy view instance
-	     * @param {boolean} [onlyChildren=false] - set true then destroy only
-	     *  children
+	     * @param {boolean} [onlyChildren=false] - set true then destroy only children
 	     */
 
 
@@ -495,6 +519,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * just clear boundCache
 	     * property.
 	     * @returns {object} size and position
+	     * @private
 	     */
 
 
@@ -517,6 +542,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {number} [options.left] - left pixel
 	     * @param {number} [options.width] - width pixel
 	     * @param {number} [options.height] - height pixel
+	     * @private
 	     */
 
 
@@ -537,6 +563,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Create fallback element when invoke constructor without container
 	     * @returns {HTMLElement} fallback division element
+	     * @private
 	     */
 
 
@@ -552,6 +579,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Add child view
 	     * @param {View} view - child view to add
 	     * @param {function} [before] - function that invoke before add
+	     * @private
 	     */
 
 
@@ -578,6 +606,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Remove child views
 	     * @param {string|View} id - child view id or instance itself
 	     * @param {function} [before] - function that invoke before remove
+	     * @private
 	     */
 
 
@@ -608,6 +637,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Render view recursively
+	     * @private
 	     */
 
 
@@ -622,6 +652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {function} iteratee - function to invoke child view recursively
 	     * @param {boolean} [skipThis=false] - set true then skip invoke with
 	     *  this(root) view.
+	     * @private
 	     */
 
 
@@ -641,6 +672,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Resize view recursively to parent.
 	     * @param {...*} [args] - arguments for supplied to each parent view.
+	     * @private
 	     */
 
 
@@ -664,6 +696,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @static
+	 * @ignore
 	 */
 
 
