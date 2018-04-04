@@ -107,15 +107,15 @@ module.exports = function(config) {
     const defaultConfig = {
         basePath: './',
         frameworks: [
-            'jasmine',
             'fixture',
+            'jasmine',
             'es5-shim'
         ],
         files: [
-            'test/*.spec.js'
+            'test/index.js'
         ],
         preprocessors: {
-            'test/*.spec.js': ['webpack', 'sourcemap']
+            'test/index.js': ['webpack', 'sourcemap']
         },
         reporters: ['dots'],
         webpack: {
