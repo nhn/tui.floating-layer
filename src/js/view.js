@@ -15,13 +15,14 @@ const VIEW_PROP = 'feView';
 
 /**
  * Basic view class
- * @class View
+ * @class
  * @mixes snippet.CustomEvents
  * @ignore
  */
 class View {
     /**
      * @param {HTMLElement} container - base container element
+     * @constructor
      */
     constructor(container) {
         container = container || this.createFallbackElement();
@@ -29,29 +30,34 @@ class View {
         /**
          * Unique ID for each view instance
          * @type {string}
+         * @private
          */
         this.id = String(View.id);
 
         /**
          * Base container element for each view instance
          * @type {HTMLElement}
+         * @private
          */
         this.container = container;
 
         /**
          * Sub views
          * @type {View[]}
+         * @private
          */
         this.children = [];
 
         /**
          * Parent view
          * @type {View}
+         * @private
          */
         this.parent = null;
 
         /**
          * Cache for container bound
+         * @private
          */
         this.boundCache = null;
 
@@ -61,11 +67,13 @@ class View {
 
     /**
      * Invoke before destroying
+     * @private
      */
     beforeDestroy() {}
 
     /**
      * Clear instance properties for destroying
+     * @private
      */
     clearProperties() {
         this.beforeDestroy();
@@ -81,8 +89,7 @@ class View {
 
     /**
      * Destroy view instance
-     * @param {boolean} [onlyChildren=false] - set true then destroy only
-     *  children
+     * @param {boolean} [onlyChildren=false] - set true then destroy only children
      */
     destroy(onlyChildren = false) {
         this.children.forEach(childView => {
@@ -105,6 +112,7 @@ class View {
      * just clear boundCache
      * property.
      * @returns {object} size and position
+     * @private
      */
     getBound() {
         let bound = this.boundCache;
@@ -126,6 +134,7 @@ class View {
      * @param {number} [options.left] - left pixel
      * @param {number} [options.width] - width pixel
      * @param {number} [options.height] - height pixel
+     * @private
      */
     setBound({top, right, bottom, left, width, height} = {}) {
         dom.setBound(
@@ -139,6 +148,7 @@ class View {
     /**
      * Create fallback element when invoke constructor without container
      * @returns {HTMLElement} fallback division element
+     * @private
      */
     createFallbackElement() {
         const el = document.createElement('div');
@@ -152,6 +162,7 @@ class View {
      * Add child view
      * @param {View} view - child view to add
      * @param {function} [before] - function that invoke before add
+     * @private
      */
     addChild(view, before = core.noop) {
         const {children} = this;
@@ -172,6 +183,7 @@ class View {
      * Remove child views
      * @param {string|View} id - child view id or instance itself
      * @param {function} [before] - function that invoke before remove
+     * @private
      */
     removeChild(id, before) {
         const {children} = this;
@@ -199,6 +211,7 @@ class View {
 
     /**
      * Render view recursively
+     * @private
      */
     render() {
         this.children.forEach(childView => {
@@ -211,6 +224,7 @@ class View {
      * @param {function} iteratee - function to invoke child view recursively
      * @param {boolean} [skipThis=false] - set true then skip invoke with
      *  this(root) view.
+     * @private
      */
     recursive(iteratee = core.noop, skipThis = false) {
         if (!skipThis) {
@@ -225,6 +239,7 @@ class View {
     /**
      * Resize view recursively to parent.
      * @param {...*} [args] - arguments for supplied to each parent view.
+     * @private
      */
     resize(...args) {
         let {parent} = this;
@@ -241,10 +256,10 @@ class View {
 
 /**
  * @static
+ * @ignore
  */
 View.id = 0;
 
 snippet.CustomEvents.mixin(View);
 
 export default View;
-
