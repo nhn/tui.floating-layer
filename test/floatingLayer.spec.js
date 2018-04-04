@@ -1,5 +1,6 @@
 
 import FloatingLayer from '../src/js/floatingLayer';
+import snippet from 'tui-code-snippet';
 
 describe('FloatingLayer', () => {
     let container;
@@ -43,5 +44,31 @@ describe('FloatingLayer', () => {
         f1.destroy();
 
         expect(container.querySelectorAll('div').length).toBe(0);
+    });
+
+    describe('use "usageStatistics" option', () => {
+        let layer;
+
+        beforeEach(() => {
+            spyOn(snippet, 'imagePing');
+        });
+
+        afterEach(() => {
+            layer.destroy();
+        });
+
+        it('when the value set to true by default, the host name is send.', () => {
+            layer = new FloatingLayer(container);
+
+            expect(snippet.imagePing).toHaveBeenCalled();
+        });
+
+        it('when the value set to false, the host name is not send to server.', () => {
+            layer = new FloatingLayer(container, {
+                usageStatistics: false
+            });
+
+            expect(snippet.imagePing).not.toHaveBeenCalled();
+        });
     });
 });

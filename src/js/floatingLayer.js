@@ -10,12 +10,29 @@ const VIEW_PROP__FLOATING_LAYER = '_floatingLayer';
 const DEFAULT_ZINDEX = 999;
 
 /**
+ * Send information to google analytics
+ * @ignore
+ */
+export function sendHostNameToGA() {
+    const {hostname} = location;
+
+    snippet.imagePing('https://www.google-analytics.com/collect', {
+        v: 1,
+        t: 'event',
+        tid: 'UA-115377265-9',
+        cid: hostname,
+        dp: hostname,
+        dh: 'floating-layer'
+    });
+}
+
+/**
  * Create layer for floating ui
  * @param {...string} [cssClass] - css classes
  * @returns {HTMLElement} layer
  * @ignore
  */
-export function createLayer(...cssClass) {
+function createLayer(...cssClass) {
     const layer = document.createElement('div');
 
     dom.css(layer, {
@@ -30,68 +47,71 @@ export function createLayer(...cssClass) {
     return layer;
 }
 
-export default snippet.defineClass(View, {
-    /**
-     * @classdesc Class for managing floating layers
-     * @class FloatingLayer
-     * @extends View
-     * @constructs FloatingLayer
-     * @param {HTMLElement} [container] - base container element
-     * @param {object} [object] - options for FloatingLayer
-     *   @param {boolean} [options.modaless=false] - set true for create floating
-     *    layer without dimmed layer
-     * @example <caption>CommonJS entry</caption>
-     * var FloatingLayer = require('tui-floating-layer');
-     * var instance = new FloatingLayer(document.querySelector'#f1');
-     * @example <caption>global namespace</caption>
-     * var layer = new tui.FloatingLayer(document.querySelector('#fl'));
-     */
-    init(container, {modaless = false} = {}) {
-        View.call(this, createLayer('floating-layer')); // this.container = div#floatingLayer
+/**
+ * @classdesc Class for managing floating layers
+ * @class FloatingLayer
+ * @param {HTMLElement} [container] - base container element
+ * @param {object} [object] - options for FloatingLayer
+ *     @param {boolean} [options.modaless=false] - set true for create floating
+ *         layer without dimmed layer
+ *     @param {boolean} [options.usageStatistics=true] Send the hostname to google analytics.
+ *         If you do not want to send the hostname, this option set to false.
+ * @example <caption>CommonJS entry</caption>
+ * var FloatingLayer = require('tui-floating-layer');
+ * var instance = new FloatingLayer(document.querySelector'#f1');
+ * @example <caption>global namespace</caption>
+ * var layer = new tui.FloatingLayer(document.querySelector('#fl'));
+ */
+export default snippet.defineClass(View, /** @lends FloatingLayer.prototype */ {
+    init(container, {
+        modaless = false,
+        usageStatistics = true
+    } = {}) {
+        View.call(this, createLayer('floating-layer'));
 
         /**
          * @type {object}
-         * @name options
-         * @memberof FloatingLayer
+         * @private
          */
-        this.options = Object.assign({}, {modaless});
+        this.options = Object.assign({}, {
+            modaless,
+            usageStatistics
+        });
 
         /**
          * @type {HTMLElement}
-         * @name parent
-         * @override View
-         * @memberof FloatingLayer#
+         * @private
          */
         this.parent = container;
 
         /**
          * @type {number}
-         * @name zIndex
-         * @memberof FloatingLayer#
+         * @private
          */
         this.zIndex = DEFAULT_ZINDEX;
 
         /**
          * @type {HTMLElement}
-         * @name dimm
-         * @memberof FloatingLayer#
+         * @private
          */
         this.dimm = null;
 
         /**
          * @type {object}
-         * @name siblings
-         * @memberof FloatingLayer#
+         * @private
          */
         this.siblings = null;
 
         this.initialize();
+
+        if (this.options.usageStatistics) {
+            sendHostNameToGA();
+        }
     },
 
     /**
-     * Initialize floating layer instance
-     *  layers not floating layer itself
-     * @memberof FloatingLayer.prototype
+     * Initialize floating layer instance layers not floating layer itself
+     * @private
      */
     initialize() {
         const {parent} = this;
@@ -125,7 +145,7 @@ export default snippet.defineClass(View, {
 
     /**
      * Destroy floating layer. no layer after destroying then
-     * @memberof FloatingLayer.prototype
+     * @private
      */
     beforeDestroy() {
         const {siblings, parent} = this;
@@ -148,7 +168,6 @@ export default snippet.defineClass(View, {
     /**
      * Destructor
      * @override
-     * @memberof FloatingLayer.prototype
      */
     destroy() {
         View.prototype.destroy.call(this);
@@ -157,7 +176,7 @@ export default snippet.defineClass(View, {
     /**
      * Set layer content
      * @param {string} html - html string
-     * @memberof FloatingLayer.prototype
+     * @private
      */
     setContent(html) {
         this.container.innerHTML = html;
@@ -166,7 +185,7 @@ export default snippet.defineClass(View, {
     /**
      * Get largest z-index value in this container
      * @returns {number}
-     * @memberof FloatingLayer.prototype
+     * @private
      */
     getLargestZIndex() {
         const indexes = [...this.siblings].map(fl => fl.zIndex);
@@ -178,7 +197,6 @@ export default snippet.defineClass(View, {
 
     /**
      * Set focus to layer
-     * @memberof FloatingLayer.prototype
      */
     focus() {
         const largestZIndex = this.getLargestZIndex();
@@ -195,7 +213,6 @@ export default snippet.defineClass(View, {
 
     /**
      * Show layer
-     * @memberof FloatingLayer.prototype
      */
     show() {
         this.focus();
@@ -208,7 +225,6 @@ export default snippet.defineClass(View, {
 
     /**
      * Hide layer
-     * @memberof FloatingLayer.prototype
      */
     hide() {
         dom.css(this.container, 'display', 'none');

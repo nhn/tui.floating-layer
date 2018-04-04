@@ -69,8 +69,8 @@ function setConfig(defaultConfig, server) {
             'IE11',
             'Edge',
             'Chrome-WebDriver',
-            'Firefox-WebDriver',
-            'Safari-WebDriver' // active only when safari test is needed
+            'Firefox-WebDriver'
+            // 'Safari-WebDriver' // active only when safari test is needed
         ];
         defaultConfig.reporters.push('coverage');
         defaultConfig.reporters.push('junit');
@@ -107,15 +107,15 @@ module.exports = function(config) {
     const defaultConfig = {
         basePath: './',
         frameworks: [
-            'jasmine',
             'fixture',
+            'jasmine',
             'es5-shim'
         ],
         files: [
-            'test/*.spec.js'
+            'test/index.js'
         ],
         preprocessors: {
-            'test/*.spec.js': ['webpack', 'sourcemap']
+            'test/index.js': ['webpack', 'sourcemap']
         },
         reporters: ['dots'],
         webpack: {
