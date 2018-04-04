@@ -32,7 +32,7 @@ export function sendHostNameToGA() {
  * @returns {HTMLElement} layer
  * @ignore
  */
-export function createLayer(...cssClass) {
+function createLayer(...cssClass) {
     const layer = document.createElement('div');
 
     dom.css(layer, {
