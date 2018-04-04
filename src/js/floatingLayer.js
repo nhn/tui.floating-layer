@@ -57,8 +57,8 @@ export default snippet.defineClass(View, {
      * @param {object} [object] - options for FloatingLayer
      *     @param {boolean} [options.modaless=false] - set true for create floating
      *         layer without dimmed layer
-     *     @param {boolean} [options.usageStatistics=true] Send the host name to google analytics.
-     *         If you do not want to send the host name, this option set to false.
+     *     @param {boolean} [options.usageStatistics=true] Send the hostname to google analytics.
+     *         If you do not want to send the hostname, this option set to false.
      * @example <caption>CommonJS entry</caption>
      * var FloatingLayer = require('tui-floating-layer');
      * var instance = new FloatingLayer(document.querySelector'#f1');
