@@ -69,7 +69,7 @@ export default snippet.defineClass(View, {
         modaless = false,
         usageStatistics = true
     } = {}) {
-        View.call(this, createLayer('floating-layer')); // this.container = div#floatingLayer
+        View.call(this, createLayer('floating-layer'));
 
         /**
          * @type {object}
