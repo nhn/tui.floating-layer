@@ -50,7 +50,7 @@ describe('FloatingLayer', () => {
         let layer;
 
         beforeEach(() => {
-            spyOn(snippet, 'imagePing');
+            spyOn(snippet, 'sendHostname');
         });
 
         afterEach(() => {
@@ -60,7 +60,7 @@ describe('FloatingLayer', () => {
         it('when the value set to true by default, the host name is send.', () => {
             layer = new FloatingLayer(container);
 
-            expect(snippet.imagePing).toHaveBeenCalled();
+            expect(snippet.sendHostname).toHaveBeenCalled();
         });
 
         it('when the value set to false, the host name is not send to server.', () => {
@@ -68,7 +68,7 @@ describe('FloatingLayer', () => {
                 usageStatistics: false
             });
 
-            expect(snippet.imagePing).not.toHaveBeenCalled();
+            expect(snippet.sendHostname).not.toHaveBeenCalled();
         });
     });
 });
