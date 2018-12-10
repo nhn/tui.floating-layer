@@ -13,6 +13,7 @@ module.exports = {
         "fixture": true
     },
     "rules": {
+        indent: [2, 4, {SwitchCase: 1, ignoreComments: false, ImportDeclaration: 1, flatTernaryExpressions: false}],
         "lines-around-directive": 0,
         "newline-before-return": 0,
         'padding-line-between-statements': [2,

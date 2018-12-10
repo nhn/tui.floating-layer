@@ -9,6 +9,7 @@
 
 
 ## 🚩 Table of Contents
+* [Collect statistics on the use of open source](#Collect-statistics-on-the-use-of-open-source)
 * [Browser Support](#-browser-support)
 * [Features](#-features)
 * [Examples](#-examples)
@@ -27,6 +28,23 @@
 * [Contributing](#-contributing)
 * [Dependency](#-dependency)
 * [License](#-license)
+
+## Collect statistics on the use of open source
+
+TOAST UI FloatingLayer applies Google Analytics (GA) to collect statistics on the use of open source, in order to identify how widely TOAST UI FloatingLayer is used throughout the world.
+It also serves as important index to determine the future course of projects.
+`location.hostname` (e.g. > “ui.toast.com") is to be collected and the sole purpose is nothing but to measure statistics on the usage.
+
+To disable GA, use the following `usageStatistics` option when creating the instance.
+
+```js
+var options = {
+    ...
+    usageStatistics: false
+}
+
+var instance = new FloatingLayer(conatiner, options);
+```
 
 
 ## 🌏 Browser Support
