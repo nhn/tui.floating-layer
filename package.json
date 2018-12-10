@@ -1,6 +1,6 @@
 {
   "name": "tui-floating-layer",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "TOAST UI Component: FloatingLayer",
   "main": "dist/tui-floating-layer",
   "scripts": {
@@ -69,7 +69,7 @@
     "webpack-dev-server": "^1.11.0"
   },
   "dependencies": {
-    "tui-code-snippet": "^1.3.0",
+    "tui-code-snippet": "^1.5.0",
     "tui-dom": "^3.0.0"
   }
 }

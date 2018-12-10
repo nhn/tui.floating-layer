@@ -14,16 +14,7 @@ const DEFAULT_ZINDEX = 999;
  * @ignore
  */
 export function sendHostNameToGA() {
-    const {hostname} = location;
-
-    snippet.imagePing('https://www.google-analytics.com/collect', {
-        v: 1,
-        t: 'event',
-        tid: 'UA-115377265-9',
-        cid: hostname,
-        dp: hostname,
-        dh: 'floating-layer'
-    });
+    snippet.sendHostname('floating-layer', 'UA-129987462-1');
 }
 
 /**
