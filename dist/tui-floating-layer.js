@@ -1,6 +1,6 @@
 /*!
  * tui-floating-layer.js
- * @version 2.1.0
+ * @version 2.1.1
  * @author NHNEnt FE Development Team <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -121,18 +121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @ignore
 	 */
 	function sendHostNameToGA() {
-	    var _location = location,
-	        hostname = _location.hostname;
-
-
-	    _tuiCodeSnippet2['default'].imagePing('https://www.google-analytics.com/collect', {
-	        v: 1,
-	        t: 'event',
-	        tid: 'UA-115377265-9',
-	        cid: hostname,
-	        dp: hostname,
-	        dh: 'floating-layer'
-	    });
+	    _tuiCodeSnippet2['default'].sendHostname('floating-layer', 'UA-129987462-1');
 	}
 
 	/**
