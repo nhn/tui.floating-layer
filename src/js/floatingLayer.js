@@ -158,7 +158,6 @@ export default snippet.defineClass(View, /** @lends FloatingLayer.prototype */ {
 
     /**
      * Destructor
-     * @override
      */
     destroy() {
         View.prototype.destroy.call(this);
