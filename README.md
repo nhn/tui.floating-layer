@@ -59,7 +59,7 @@ var instance = new FloatingLayer(conatiner, options);
 
 
 ## 🐾 Examples
-* [Basic](https://nhnent.github.io/tui.floating-layer/latest/tutorial-example01-basic.html) : Example of using default options.
+* [Basic](https://nhnent.github.io/tui.floating-layer/latest/tutorial-example01-basic) : Example of using default options.
 
 
 ## 💾 Install
@@ -142,11 +142,11 @@ var FloatingLayer = require('tui-floating-layer'); /* CommonJS */
 ```
 
 ``` javascript
-import {FloatingLayer} from 'tui-floating-layer'; /* ES6 */
+import FloatingLayer from 'tui-floating-layer'; /* ES6 */
 ```
 
 
-You can create an instance with [options](https://nhnent.github.io/tui.floating-layer/latest/FloatingLayer.html) and call various APIs after creating an instance.
+You can create an instance with [options](https://nhnent.github.io/tui.floating-layer/latest/FloatingLayer) and call various APIs after creating an instance.
 
 ``` javascript
 var conatiner = document.getElementById('tui-floating-layer-container');
@@ -155,7 +155,7 @@ var instance = new FloatingLayer(conatiner, { ... });
 instance.show();
 ```
 
-For more information about the API, please see [here](https://nhnent.github.io/tui.floating-layer/latest/FloatingLayer.html).
+For more information about the API, please see [here](https://nhnent.github.io/tui.floating-layer/latest/FloatingLayer).
 
 
 ## 🔧 Pull Request Steps
