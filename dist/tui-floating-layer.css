@@ -1,6 +1,6 @@
 /*!
  * tui-floating-layer.min.js
- * @version 2.1.1
+ * @version 2.1.2
  * @author NHNEnt FE Development Team <dl_javascript@nhnent.com>
  * @license MIT
  */

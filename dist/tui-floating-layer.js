@@ -1,6 +1,6 @@
 /*!
  * tui-floating-layer.js
- * @version 2.1.1
+ * @version 2.1.2
  * @author NHNEnt FE Development Team <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -278,7 +278,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Destructor
-	     * @override
 	     */
 	    destroy: function destroy() {
 	        _view2['default'].prototype.destroy.call(this);
