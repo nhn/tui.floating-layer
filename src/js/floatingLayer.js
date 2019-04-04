@@ -1,6 +1,6 @@
 /**
  * @fileoverview Module for managing non zero z-index division on viewport
- * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 import * as dom from 'tui-dom';
 import View from './view';
