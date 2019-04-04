@@ -20,13 +20,14 @@
     "url": "https://github.com/nhnent/tui.floating-layer.git"
   },
   "keywords": [
+    "nhn",
     "nhnent",
     "tui",
     "ui component",
     "javascript ui",
     "floating-layer"
   ],
-  "author": "NHNEnt FE Development Team <dl_javascript@nhnent.com>",
+  "author": "NHN. FE Development Lab <dl_javascript@nhn.com>",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.18.2",

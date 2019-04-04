@@ -1,6 +1,6 @@
 /**
  * @fileoverview Core utility methods module
- * @author NHN Ent. FE Development team <dl_javascript@nhnent.com>
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 import snippet from 'tui-code-snippet';
 

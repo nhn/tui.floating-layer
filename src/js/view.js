@@ -1,6 +1,6 @@
 /**
  * @fileoverview The base class of views.
- * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 import * as core from './core';
 import * as dom from 'tui-dom';
