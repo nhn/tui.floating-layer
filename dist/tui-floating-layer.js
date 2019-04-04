@@ -1,7 +1,7 @@
 /*!
  * tui-floating-layer.js
- * @version 2.1.2
- * @author NHNEnt FE Development Team <dl_javascript@nhnent.com>
+ * @version 2.1.3
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /**
 	                                                                                                                                                                                                                                                                   * @fileoverview Module for managing non zero z-index division on viewport
-	                                                                                                                                                                                                                                                                   * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
+	                                                                                                                                                                                                                                                                   * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	                                                                                                                                                                                                                                                                   */
 
 
@@ -386,7 +386,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
 	                                                                                                                                                           * @fileoverview The base class of views.
-	                                                                                                                                                           * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
+	                                                                                                                                                           * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	                                                                                                                                                           */
 
 
@@ -727,7 +727,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	/**
 	 * @fileoverview Core utility methods module
-	 * @author NHN Ent. FE Development team <dl_javascript@nhnent.com>
+	 * @author NHN. FE Development Lab <dl_javascript@nhn.com>
 	 */
 	function uniq(array) {
 	    var map = new _tuiCodeSnippet2['default'].ExMap();
