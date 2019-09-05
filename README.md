@@ -1,3 +1,5 @@
+#### ‼️ There are no major updates planned for `tui.floating-layer` in the future. It will only get bug fixes.
+
 # TOAST UI Component : Floating Layer
 > Component that creates and manages multiple floating layers.
 
